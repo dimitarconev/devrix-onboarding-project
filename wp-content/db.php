@@ -1,0 +1,1 @@
+/Users/dimitartsonev/local/devrix-onboarding-project/wp-content/plugins/query-monitor/wp-content/db.php
