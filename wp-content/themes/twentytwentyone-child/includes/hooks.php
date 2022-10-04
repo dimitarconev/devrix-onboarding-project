@@ -20,7 +20,7 @@ class Hooks{
     public function singularPostsFilter( $content ){
 
         if ( is_single() ){
-            $content .= "This is my filter";
+            $content .= _e( "This is my filter" );;
         }
 
         return $content;
