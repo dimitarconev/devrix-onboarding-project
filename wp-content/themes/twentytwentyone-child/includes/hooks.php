@@ -41,10 +41,11 @@ class Hooks{
     }
 
     public function addMenuItems( $items, $args ){
-
-        $items .=  '<li class="menu-item "><a href="'.get_edit_user_link().'" >Profile Page</a></li>';
+        if ( is_user_logged_in() ){
+            $items .=  '<li class="menu-item "><a href="'.get_edit_user_link().'" >Profile Page</a></li>';
+        }
         return $items;
-        
+
     }
 
 }
