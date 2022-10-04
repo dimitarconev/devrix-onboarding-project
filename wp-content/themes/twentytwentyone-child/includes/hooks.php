@@ -9,8 +9,12 @@ class Hooks{
         add_filter( 'the_content', array( $this, 'filterOne' ), 9, 1);
         add_filter( 'the_content', array( $this, 'filterThree' ), 11, 1);
         add_filter( 'wp_nav_menu_items', array( $this, 'addMenuItems' ), 10, 2 );
+        add_action( 'profile_update', array( $this, 'profileUpdate' ), 10, 1 );
 
+    }
 
+    function profileUpdate($user) {
+        wp_mail( "dtsonev@devrix.com", 'Profile Update', 'Profile update of user'. $user->user_nicename.' has been updated');
     }
 
     public function singularPostsFilter( $content ){
