@@ -15,7 +15,8 @@ get_header();
 while ( have_posts() ) :
 	the_post();
 
-	get_template_part( 'template-parts/content/content-single' );
+	$content = apply_filters( 'custom_the_content', get_the_content(), "This is my extendable filter");
+	echo $content;
     ?>
         <div class="bottom-image">
             <img src="<?php echo get_stylesheet_directory_uri();?>/assets/images/dixy.png">

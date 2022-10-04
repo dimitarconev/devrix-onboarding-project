@@ -10,7 +10,7 @@
                                 while ( have_posts() ) : the_post();
                                     the_title();
                                     the_post_thumbnail();
-                                    the_content();
+                                    do_action( "template_the_content", get_the_content() );
                                     the_author();
                                 endwhile;
                                 ?>

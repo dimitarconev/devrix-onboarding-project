@@ -4,23 +4,28 @@ class Hooks{
     
     public function __construct(){
 
-        add_filter( 'the_content', array( $this, 'singularPostsFilter' ), 10, 1);
+        add_filter( 'custom_the_content', array( $this, 'singularPostsFilter' ), 10, 2);
         add_filter( 'the_content', array( $this, 'filterTwo' ), 10, 1);
         add_filter( 'the_content', array( $this, 'filterOne' ), 9, 1);
         add_filter( 'the_content', array( $this, 'filterThree' ), 11, 1);
         add_filter( 'wp_nav_menu_items', array( $this, 'addMenuItems' ), 10, 2 );
         add_action( 'profile_update', array( $this, 'profileUpdate' ), 10, 1 );
+        add_action( "template_the_content", array( $this, 'templatePageContent'), 10, 1 );
+    }
 
+    function templatePageContent( $content ){
+       
+       echo $content;
     }
 
     function profileUpdate($user) {
         wp_mail( "dtsonev@devrix.com", 'Profile Update', 'Profile update of user'. $user->user_nicename.' has been updated');
     }
 
-    public function singularPostsFilter( $content ){
+    public function singularPostsFilter( $content, $arg1 ){
 
         if ( is_single() ){
-            $content .= _e( "This is my filter" );;
+            $content .= _e( $arg1 );;
         }
 
         return $content;
