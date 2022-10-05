@@ -185,7 +185,7 @@ class Students
 
     public function students_option_page(){
 
-      add_submenu_page('options-general.php', 'Students', 'Students', 'administrator', __FILE__,  array( $this, 'student_options_callback' ) );
+      add_menu_page( 'Students', 'Students', 'administrator', __FILE__,  array( $this, 'student_options_callback' ) );
       
     }
 
