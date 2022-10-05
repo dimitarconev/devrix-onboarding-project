@@ -23,6 +23,8 @@ class Activator {
 	 * @since    1.0.0
 	 */
 	public static function activate() {
-		// Some code.
+		
+		//Populate some dummy posts
+		Students::seedPosts();
 	}
 }

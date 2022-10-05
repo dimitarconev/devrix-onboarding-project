@@ -148,7 +148,10 @@ class DX_Students {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		// Another action is passed to the class object.
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-
+		//Creating instance of Students CPT class
+		$plugin_students = new Students();
+		//Registering Students CPT
+		$this->loader->add_action( 'init', $plugin_students, 'register_students_type' );
 	}
 
 	/**
