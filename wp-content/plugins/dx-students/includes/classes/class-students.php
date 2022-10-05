@@ -84,12 +84,22 @@ class Students
     public static function students_template( $template ){
        
         if ( is_post_type_archive( 'students' ) ) {
-            $theme_files = array( 'archive-students.php' );
+            $theme_files = array( 'archive-students.php'  );
             $exists_in_theme = locate_template($theme_files, false);
             if ( $exists_in_theme != '' ) {
               return $exists_in_theme;
             } else {
               return DXS_DIR . '/templates/archive-students.php';
+            }
+          }
+
+          if ( is_singular ( 'students' )){
+            $theme_files = array( 'single-students.php'  );
+            $exists_in_theme = locate_template($theme_files, false);
+            if ( $exists_in_theme != '' ) {
+              return $exists_in_theme;
+            } else {
+              return DXS_DIR . '/templates/single-students.php';
             }
           }
           return $template;
