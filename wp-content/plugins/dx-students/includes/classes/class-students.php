@@ -129,7 +129,7 @@ class Students
       <p>
         <label for="student-post-birth-date"><?php _e( "Birth Date" ); ?></label>
         <br />
-        <input class="widefat" type="text" name="student_birth_date" id="student-post-birth-date" value="<?php echo esc_attr( get_post_meta( $post->ID, 'student_birth_date', true ) ); ?>" size="30" />
+        <input class="widefat" type="date" name="student_birth_date" id="student-post-birth-date" value="<?php echo esc_attr( get_post_meta( $post->ID, 'student_birth_date', true ) ); ?>" size="30" />
       </p>
       <p>
         <label for="student-post-active"><?php _e( "Active ?" ); ?></label>
