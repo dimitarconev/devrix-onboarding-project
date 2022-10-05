@@ -131,6 +131,9 @@ class DX_Students {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		$plugin_students = new Students();
+		$this->loader->add_action( 'add_meta_boxes', $plugin_students, 'add_meta_boxes' );
+		$this->loader->add_action( 'save_post', $plugin_students, 'save_meta_boxes', 10, 2 );
 	}
 
 	/**
