@@ -25,7 +25,6 @@ class Students
      */
     public static function register_students_type()
     {
-        flush_rewrite_rules();
         register_post_type(
             'students',
             array(
