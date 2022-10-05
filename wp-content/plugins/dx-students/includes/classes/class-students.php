@@ -162,7 +162,7 @@ class Students
       foreach( $metaKeys as $meta_key ){
 
         $meta_value = get_post_meta( $post_id, $meta_key, true );
-        $new_meta_value = $_POST[ $meta_key ];
+        $new_meta_value = ( isset( $_POST[ $meta_key] ) ? sanitize_text_field( $_POST[ $meta_key ] ) : ’ );
         if ( $new_meta_value  == $meta_value )
           add_post_meta( $post_id, $meta_key, $new_meta_value, true );
         /* If the new meta value does not match the old value, update it. */
