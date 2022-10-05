@@ -25,7 +25,7 @@ class Students
      */
     public static function register_students_type()
     {
-
+        flush_rewrite_rules();
         register_post_type(
             'students',
             array(
@@ -60,5 +60,39 @@ class Students
             ));
         }
 
+    }
+    /**
+     * Add limit to posts per page 4
+     *
+     * @param [type] $query - WP query object
+     * @return void
+     */
+    public function modify_students_query( $query ){
+
+        if( ! is_admin()
+            && $query->is_post_type_archive( 'students' )
+            && $query->is_main_query() ){
+                $query->set( 'posts_per_page', 4 );
+        }
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param [type] Theme template
+     * @return $template
+     */
+    public static function students_template( $template ){
+       
+        if ( is_post_type_archive( 'students' ) ) {
+            $theme_files = array( 'archive-students.php' );
+            $exists_in_theme = locate_template($theme_files, false);
+            if ( $exists_in_theme != '' ) {
+              return $exists_in_theme;
+            } else {
+              return DXS_DIR . '/templates/archive-students.php';
+            }
+          }
+          return $template;
     }
 }

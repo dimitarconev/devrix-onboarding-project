@@ -152,6 +152,10 @@ class DX_Students {
 		$plugin_students = new Students();
 		//Registering Students CPT
 		$this->loader->add_action( 'init', $plugin_students, 'register_students_type' );
+		//Including theme files from plugin
+		$this->loader->add_filter( 'template_include', $plugin_students, 'students_template');
+		//Modifying archive query
+		$this->loader->add_action( 'pre_get_posts', $plugin_students, 'students_template' );
 	}
 
 	/**
