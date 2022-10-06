@@ -167,10 +167,6 @@ class Students
         if ( $new_meta_value && $new_meta_value != $meta_value ){
             update_post_meta( $post_id, $meta_key, $new_meta_value );
         } 
-        elseif ( '' == $new_meta_value && $meta_value ){
-          delete_post_meta( $post_id, $meta_key, $meta_value );
-        }
-        
       }
     }
 }
