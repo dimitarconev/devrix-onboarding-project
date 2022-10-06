@@ -25,7 +25,7 @@ class Hooks{
     public function singular_posts_filter( $content, $arg1 ){
 
         if ( is_single() ){
-            $content .= _e( $arg1 );;
+            $content .= _e( $arg1 , 'twentytwentyone-child' );;
         }
 
         return $content;
