@@ -169,4 +169,55 @@ class Students
         } 
       }
     }
+
+    public static function register_settings(){
+      register_setting( 'students-cpt-settings', 'student_country' );
+      register_setting( 'students-cpt-settings', 'student_adress' );
+      register_setting( 'students-cpt-settings', 'student_birth_date' );
+      register_setting( 'students-cpt-settings', 'student_active' );
+
+    }
+
+    public function students_option_page(){
+
+      add_menu_page( 'Students', 'Students', 'administrator', __FILE__,  array( $this, 'student_options_callback' ) );
+      
+    }
+
+    public function student_options_callback(){
+      ?>
+      <div class="wrap">
+      <h1>Student CPT Settings</h1>
+      
+      <form method="post" action="options.php">
+          <?php settings_fields( 'students-cpt-settings' ); ?>
+          <?php do_settings_sections( 'students-cpt-settings' ); ?>
+          <table class="form-table">
+              <tr valign="top">
+              <th scope="row">Country: </th>
+              <td><input class="widefat" type="checkbox" name="student_country" id="student-post-country" value="true" <?php echo  ( (  esc_attr( get_option('student_country') ) == "true" ) ? 'checked' : '' ); ?> size="30" /> </td>
+              </tr>
+               
+              <tr valign="top">
+              <th scope="row">Adress: </th>
+              <td><input class="widefat" type="checkbox" name="student_adress" id="student-post-adress" value="true" <?php echo  ( (  esc_attr( get_option('student_adress') ) == "true" ) ? 'checked' : '' ); ?> size="30" /> </td>
+              </tr>
+              
+              <tr valign="top">
+              <th scope="row">Birth date: </th>
+              <td><input class="widefat" type="checkbox" name="student_birth_date" id="student-post-birth-date" value="true" <?php echo  ( (  esc_attr( get_option('student_birth_date') ) == "true" ) ? 'checked' : '' ); ?> size="30" /> </td>
+              </tr>
+
+              <tr valign="top">
+              <th scope="row">Active: </th>
+              <td><input class="widefat" type="checkbox" name="student_active" id="student-post-active" value="true" <?php echo  ( (  esc_attr( get_option('student_active') ) == "true" ) ? 'checked' : '' ); ?> size="30" /> </td>
+              </tr>
+          </table>
+          
+          <?php submit_button(); ?>
+      
+      </form>
+      </div>
+      <?php
+    }
 }
