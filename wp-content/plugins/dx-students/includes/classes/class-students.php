@@ -255,6 +255,11 @@ class Students
         <?php
     }
 
+    /**
+     * Ajax handler function for editing checkbox on Students Ajax Settings page
+     *
+     * @return void
+     */
     public function ajax_call_settings_page(){
 
         $name = ( $_POST[ 'name' ] != "" ) ? $_POST[ 'name' ] : " ";
@@ -266,4 +271,51 @@ class Students
         }
         wp_send_json_success( 'Setting was updated' );
     }
+
+    /**
+     * Ajax handler function for editing checkbox on CPT posts view
+     *
+     * @return void
+     */
+    public function update_single_student_active_status(){
+      $post_id = ( $_POST[ 'id' ] != "" ) ? $_POST[ 'id' ] : " ";
+      $checked = ( $_POST[ 'checked' ] != "" ) ? $_POST[ 'checked' ] : " ";
+      if( $checked == "false" ){
+        update_post_meta( $post_id, 'student_active', 'false' );
+      }elseif ( $checked == "true" ) {
+        update_post_meta( $post_id, 'student_active', 'true' );
+      }
+      wp_send_json_success( 'Setting was updated' );        
+    }
+
+    /**
+     * Add the custom columns to the Students CPT
+     *
+     * @param [type] $columns
+     * @return void
+     */
+    public function set_students_custom_columns( $columns ){
+
+      $columns['active'] = "Active";
+
+      return $columns;
+    }
+
+    public function manage_students_columns( $column, $post_id ){
+      
+      switch( $column ){
+        case "active":
+          $checked =  ( ( get_post_meta( $post_id, "student_active", true ) == "true" ) ? "checked" : "" );
+          if ( $checked == "checked" ){
+            echo '<input class="students-column-active-checkbox" type="checkbox" name="student_active" id="student-post-active" value="'.$post_id.'" '.$checked. ' size="30" />Active';
+          } else {
+            echo '<input class="students-column-active-checkbox" type="checkbox" name="student_active" id="student-post-active" value="'.$post_id.'" '.$checked. ' size="30" />Inactive';
+          }
+         
+          break;
+      }
+
+    }
+
+
 }

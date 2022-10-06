@@ -40,4 +40,17 @@
 		});
    	});
 
+	   $(document).on("click", "input[class='students-column-active-checkbox']", function (e) {
+		let checked = e.target.checked ;
+		let post_id = e.target.value;
+		var data = {
+			'action': 'update_single_student_active_status',
+			'checked': checked,
+			'id': post_id
+		};
+		$.post(ajaxurl, data, function(response) {
+			
+		});
+   	});
+
 })(jQuery);
