@@ -56,7 +56,7 @@ class Admin {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, DXS_URL . 'assets/dist/admin/css/dx-students-admin.css', array(), filemtime( DXS_DIR . 'assets/dist/admin/css/admin-master.css' ) );
+		wp_enqueue_style( $this->plugin_name, DXS_URL . 'assets/dist/admin/css/dx-students-admin.min.css', array(), filemtime( DXS_DIR . 'assets/dist/admin/css/admin-master.css' ) );
 
 	}
 
@@ -79,7 +79,7 @@ class Admin {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, DXS_URL . 'assets/dist/admin/js/dx-students-admin.js', array( 'jquery' ), filemtime( DXS_DIR . 'assets/dist/admin/js/admin-bundle.min.js' ), false );
+		wp_enqueue_script( $this->plugin_name, DXS_URL . 'assets/dist/admin/js/dx-students-admin.min.js', array( 'jquery' ), filemtime( DXS_DIR . 'assets/dist/admin/js/admin-bundle.min.js' ), false );
 
 	}
 

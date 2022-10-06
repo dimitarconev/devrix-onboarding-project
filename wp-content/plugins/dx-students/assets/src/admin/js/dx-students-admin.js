@@ -25,5 +25,19 @@
 	 * Ideally, it is not considered best practise to attach more than a
 	 * single DOM-ready or window-load handler for a particular page.
 	 */
+	 $(document).on("click", "input[class='ajax_students_checkbox']", function (e) {
+		let checked = e.target.checked ;
+		let name = e.target.name;
+		var data = {
+			'action': 'update_students_ajax_options',
+			'checked': checked,
+			'name': name
+		};
+		$.post(ajaxurl, data, function(response) {
+
+			$( '#save_result' ).html( "<div id='saveMessage' class='success'>Settings save success</div>" );
+			
+		});
+   	});
 
 })(jQuery);

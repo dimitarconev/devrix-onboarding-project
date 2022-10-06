@@ -180,8 +180,10 @@ class Students
 
     public function students_option_page(){
 
-      add_menu_page( 'Students', 'Students', 'administrator', __FILE__,  array( $this, 'student_options_callback' ) );
-      
+      //Add Students menu into main menu
+      add_menu_page( 'Students', 'Students', 'administrator', 'students-main',  array( $this, 'student_options_callback' ) );
+      //Add submenu page of Students
+      add_submenu_page( 'students-main' ,'AJAX SETTINGS', 'AJAX SETTINGS', 'administrator', __FILE__,  array( $this, 'student_ajax_options_callback' ) );
     }
 
     public function student_options_callback(){
@@ -219,5 +221,49 @@ class Students
       </form>
       </div>
       <?php
+    }
+
+    /**
+     * Function for the AJAX settings page view
+     *
+     * @return void
+     */
+    public function student_ajax_options_callback(){
+        ?>
+        <div id="save_result"></div>
+       <table class="ajax-form-table">
+            <tr valign="top">
+            <th scope="row">Country: </th>
+            <td><input class="ajax_students_checkbox" type="checkbox" name="student_country" id="student-post-country" value="true" <?php echo  ( (  esc_attr( get_option('student_country') ) == "true" ) ? 'checked' : '' ); ?> size="30" /> </td>
+            </tr>
+              
+            <tr valign="top">
+            <th scope="row">Adress: </th>
+            <td><input class="ajax_students_checkbox" type="checkbox" name="student_adress" id="student-post-adress" value="true" <?php echo  ( (  esc_attr( get_option('student_adress') ) == "true" ) ? 'checked' : '' ); ?> size="30" /> </td>
+            </tr>
+            
+            <tr valign="top">
+            <th scope="row">Birth date: </th>
+            <td><input class="ajax_students_checkbox" type="checkbox" name="student_birth_date" id="student-post-birth-date" value="true" <?php echo  ( (  esc_attr( get_option('student_birth_date') ) == "true" ) ? 'checked' : '' ); ?> size="30" /> </td>
+            </tr>
+
+            <tr valign="top">
+              <th scope="row">Active: </th>
+              <td><input class="ajax_students_checkbox" type="checkbox" name="student_active" id="student-post-active" value="true" <?php echo  ( (  esc_attr( get_option('student_active') ) == "true" ) ? 'checked' : '' ); ?> size="30" /> </td>
+            </tr>
+      </table>
+        <?php
+    }
+
+    public function ajax_call_settings_page(){
+
+        $name = ( $_POST[ 'name' ] != "" ) ? $_POST[ 'name' ] : " ";
+        $checked = ( $_POST[ 'checked' ] != "" ) ? $_POST[ 'checked' ] : " ";        
+        if( $checked == "false" ){
+          update_option( $name, 'false' );
+        }elseif ( $checked == "true" ) {
+          update_option( $name, 'true' );
+        }
+        wp_send_json_success( 'Setting was updated' );
     }
 }
