@@ -47,7 +47,7 @@ class Students
      *
      * @return void
      */
-    public static function seedPosts(){
+    public static function seed_posts(){
 
         for ( $i = 1; $i < 4; $i++ ){
             wp_insert_post( array(

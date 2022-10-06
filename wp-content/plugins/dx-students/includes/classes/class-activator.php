@@ -25,6 +25,6 @@ class Activator {
 	public static function activate() {
 		
 		//Populate some dummy posts
-		Students::seedPosts();
+		Students::seed_posts();
 	}
 }
