@@ -174,6 +174,8 @@ class Students
       register_setting( 'students-cpt-settings', 'student_country' );
       register_setting( 'students-cpt-settings', 'student_adress' );
       register_setting( 'students-cpt-settings', 'student_birth_date' );
+      register_setting( 'students-transients-settings', 'student_transients_expire_time' );
+
       register_setting( 'students-cpt-settings', 'student_active' );
 
     }
@@ -192,7 +194,19 @@ class Students
       ?>
       <div class="wrap">
         <h1>Oxford Dictionary Page</h1>
-        
+        <form method="post" action="options.php">
+          <?php settings_fields( 'students-transients-settings' ); ?>
+          <?php do_settings_sections( 'students-transients-settings' ); ?>
+          <table class="form-table">
+              <tr valign="top">
+              <th scope="row">Transient Expire Time: </th>
+              <td><input class="wide" type="text" name="student_transients_expire_time" id="student_transient_expire_time" placeholder="10" value=" <?php echo  esc_attr( get_option('student_transients_expire_time') ) ?> "  /> </td>
+              </tr>
+          </table>
+          
+          <?php submit_button(); ?>
+      
+      </form>
         <form id="dictionary-form-students" method="POST">
             <table class="form-table">
                 <tr valign="top">
@@ -203,7 +217,7 @@ class Students
             <input type="submit" value="Search..">
         </form>
         <div class="dictionary-result">
-
+            <?php if( get_transient('dictionary_word') ){ echo get_transient('dictionary_word'); } ?>
         </div>
       </div>
       <?php
@@ -326,6 +340,8 @@ class Students
         return false; 
       }
       $body = wp_remote_retrieve_body( $response );
+      $expire_time = (  get_option('student_transients_expire_time')  == "" || !get_option('student_transients_expire_time')  ) ?  10 :  get_option('student_transients_expire_time');
+      set_transient( "dictionary_word", $body, $expire_time  );
       wp_send_json_success( $body );    
     }
 
