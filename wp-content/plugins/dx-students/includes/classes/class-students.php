@@ -15,6 +15,8 @@
 
 namespace DXS;
 
+use WP_Query;
+use WP_REST_Request;
 class Students
 {
 
@@ -220,4 +222,80 @@ class Students
       </div>
       <?php
     }
+
+    public function students_register_rest_routes(){
+
+      register_rest_route( 'dx-students/v1', '/students', array(
+        'methods' => 'GET',
+        'callback' => array( $this, 'rest_endpoint_students_fetch' ),
+      ) );
+      register_rest_route( 'dx-students/v1', '/id/(?P<id>\d+)', array(
+        'methods' => 'GET',
+        'callback' => array( $this, 'rest_endpoint_student_fetch' ),
+      ) );
+    }
+
+    /**
+     * Rest Route fetching single student
+     *
+     * @param WP_REST_Request $request
+     * @return void
+     */
+    public function rest_endpoint_student_fetch( WP_REST_Request $request) { 
+  
+      $params = $request->get_query_params();
+      $args = [
+          'posts_per_page' => -1,
+          'post_type' => 'students',
+          'post_status' => "publish,private,draft",
+          'p' => $params['id']
+      ];
+  
+      $posts = new WP_Query($args);
+      $response_data = array();
+      foreach( $posts->posts as $post ){
+        $temp = array();
+        $meta = get_post_meta( $post->ID );
+        $temp['name'] = $post->post_title;
+        $temp['student_birth_date'] = ( isset( $meta['student_birth_date'][0]) ) ? $meta['student_birth_date'][0] : "";
+        $temp['student_birth_date'] = ( isset( $meta['student_adress'][0]) ) ? $meta['student_adress'][0] : "";
+        $temp['student_birth_date'] = ( isset( $meta['student_active'][0]) ) ? $meta['student_active'][0] : "";
+        $temp['student_birth_date'] = ( isset( $meta['student_country'][0]) ) ? $meta['student_country'][0] : "";
+        $response_data[] = $temp;
+      }
+         
+  
+      return json_encode( $response_data );
+  }
+    
+    /**
+     * REST API endopoint function callback
+     *
+     * @param WP_REST_Request $request
+     * @return void
+     */
+    public function rest_endpoint_students_fetch( WP_REST_Request $request) { 
+  
+      $args = [
+          'posts_per_page' => -1,
+          'post_type' => 'students',
+          'post_status' => "publish,private,draft",
+      ];
+  
+      $posts = new WP_Query($args);
+      $response_data = array();
+      foreach( $posts->posts as $post ){
+        $temp = array();
+        $meta = get_post_meta( $post->ID );
+        $temp['name'] = $post->post_title;
+        $temp['student_birth_date'] = ( isset( $meta['student_birth_date'][0]) ) ? $meta['student_birth_date'][0] : "";
+        $temp['student_birth_date'] = ( isset( $meta['student_adress'][0]) ) ? $meta['student_adress'][0] : "";
+        $temp['student_birth_date'] = ( isset( $meta['student_active'][0]) ) ? $meta['student_active'][0] : "";
+        $temp['student_birth_date'] = ( isset( $meta['student_country'][0]) ) ? $meta['student_country'][0] : "";
+        $response_data[] = $temp;
+      }
+         
+  
+      return json_encode( $response_data );
+  }
 }
