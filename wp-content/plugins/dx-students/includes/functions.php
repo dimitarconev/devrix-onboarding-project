@@ -13,3 +13,33 @@
  * @subpackage DX_Students/includes
  * @author     DevriX <contact@devrix.com>
  */
+
+add_shortcode('students', 'dx_students_list' );
+
+/**
+ * Shortcode function for displaying students list. Can be filtered with students_count param 
+ *
+ * @param array $atts
+ * @return void
+ */
+function dx_students_list( $atts = [] ){
+    
+    $students_number = ( isset( $atts['students_count']) ) ? $atts[ 'students_count' ] : -1 ;
+    $query = array(
+        'posts_per_page' => $students_number ,
+        'post_status' => 'publish,private,draft',
+        'post_type' => 'students'
+    );
+   
+    $posts = new WP_Query( $query );
+    $posts = $posts->get_posts();
+    $output = "";
+    foreach( $posts as $post ){
+
+        $meta = get_post_meta( $post->ID );
+        $output.= "Name : ".$post->post_title;
+        $output.= get_the_post_thumbnail( $post ); echo "<br>";
+    }
+
+    return $output;
+}
