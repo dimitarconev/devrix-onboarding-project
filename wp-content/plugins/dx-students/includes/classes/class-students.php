@@ -182,8 +182,31 @@ class Students
 
       //Add Students menu into main menu
       add_menu_page( 'Students', 'Students', 'administrator', 'students-main',  array( $this, 'student_options_callback' ) );
+      //Add Oxford dictionary page
+      add_menu_page( 'Dictionary', 'Dictionary', 'administrator', 'dictionary',  array( $this, 'dictionary_page_callback' ) );
       //Add submenu page of Students
       add_submenu_page( 'students-main' ,'AJAX SETTINGS', 'AJAX SETTINGS', 'administrator', __FILE__,  array( $this, 'student_ajax_options_callback' ) );
+    }
+
+    public function dictionary_page_callback(){
+      ?>
+      <div class="wrap">
+        <h1>Oxford Dictionary Page</h1>
+        
+        <form id="dictionary-form-students" method="POST">
+            <table class="form-table">
+                <tr valign="top">
+                <th scope="row">Search Word: </th>
+                <td><input class="wide" type="text" name="dictionary_word" id="dictionary-word" value=""  /> </td>
+                </tr>
+            </table>
+            <input type="submit" value="Search..">
+        </form>
+        <div class="dictionary-result">
+
+        </div>
+      </div>
+      <?php
     }
 
     public function student_options_callback(){
@@ -286,6 +309,24 @@ class Students
         update_post_meta( $post_id, 'student_active', 'true' );
       }
       wp_send_json_success( 'Setting was updated' );        
+    }
+
+    /**
+     * Ajax handler function for searching Oxford dictionary
+     *
+     * @return void
+     */
+    public function search_oxford_dictionary(){
+
+      $params = array();
+      parse_str( sanitize_text_field( $_POST[ 'data' ] ), $params);
+      $word = $params[ 'dictionary_word' ];
+      $response = wp_remote_get( "https://www.oxfordlearnersdictionaries.com/definition/english/".$word);
+      if( is_wp_error( $response ) ) {
+        return false; 
+      }
+      $body = wp_remote_retrieve_body( $response );
+      wp_send_json_success( $body );    
     }
 
     /**

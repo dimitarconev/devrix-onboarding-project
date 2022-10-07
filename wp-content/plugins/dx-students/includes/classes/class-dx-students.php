@@ -138,7 +138,8 @@ class DX_Students {
 		$this->loader->add_action( 'admin_menu', $plugin_students, 'students_option_page' );
 		//Wordpress ajax settings page function
 		$this->loader->add_action( 'wp_ajax_update_students_ajax_options', $plugin_students, 'ajax_call_settings_page' );
-
+		//Ajax settings for Dictionary search
+		$this->loader->add_action( 'wp_ajax_search_oxford_dictionary', $plugin_students, 'search_oxford_dictionary' );
 		//Adding the custom column
 		$this->loader->add_action( 'wp_ajax_update_single_student_active_status', $plugin_students, 'update_single_student_active_status' );
 		$this->loader->add_filter( 'manage_students_posts_columns', $plugin_students, 'set_students_custom_columns');

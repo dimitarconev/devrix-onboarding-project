@@ -40,7 +40,7 @@
 		});
    	});
 
-	   $(document).on("click", "input[class='students-column-active-checkbox']", function (e) {
+	$(document).on("click", "input[class='students-column-active-checkbox']", function (e) {
 		let checked = e.target.checked ;
 		let post_id = e.target.value;
 		var data = {
@@ -51,6 +51,18 @@
 		$.post(ajaxurl, data, function(response) {
 			
 		});
-   	});
+	});
+	
+	$(document).on("submit", "form[id='dictionary-form-students']", function (e) {
+		e.preventDefault();
+		var values = $(this).serialize();
+		var data = {
+			'action': 'search_oxford_dictionary',
+			'data': values,
+		};
+		$.post(ajaxurl, data, function(response) {
+			$( ".dictionary-result" ).html(response.data);
+		});
+	});
 
 })(jQuery);
