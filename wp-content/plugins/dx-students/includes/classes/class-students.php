@@ -241,14 +241,13 @@ class Students
      * @param WP_REST_Request $request
      * @return void
      */
-    public function rest_endpoint_student_fetch( WP_REST_Request $request) { 
-  
-      $params = $request->get_query_params();
+    public function rest_endpoint_student_fetch( $data) { 
+      
       $args = [
           'posts_per_page' => -1,
           'post_type' => 'students',
           'post_status' => "publish,private,draft",
-          'p' => $params['id']
+          'p' => $data['id']
       ];
   
       $posts = new WP_Query($args);
