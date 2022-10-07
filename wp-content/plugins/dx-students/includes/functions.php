@@ -25,10 +25,12 @@ add_shortcode('students', 'dx_students_list' );
 function dx_students_list( $atts = [] ){
     
     $students_number = ( isset( $atts['students_count']) ) ? $atts[ 'students_count' ] : -1 ;
+    $id = ( isset( $atts['id']) ) ? intval($atts[ 'id' ]) : 0 ;
     $query = array(
         'posts_per_page' => $students_number ,
         'post_status' => 'publish,private,draft',
-        'post_type' => 'students'
+        'post_type' => 'students',
+        'p' => $id,
     );
    
     $posts = new WP_Query( $query );
