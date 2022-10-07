@@ -38,7 +38,7 @@ function dx_students_list( $atts = [] ){
 
         $meta = get_post_meta( $post->ID );
         $output.= "Name : ".$post->post_title;
-        $output.= get_the_post_thumbnail( $post ); echo "<br>";
+        $output.= get_the_post_thumbnail( $post ). "<br>";
     }
 
     return $output;
