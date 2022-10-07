@@ -14,6 +14,7 @@
  */
 
 namespace DXS;
+use WP_Query;
 
 class Students
 {
@@ -219,5 +220,34 @@ class Students
       </form>
       </div>
       <?php
+    }
+
+    public function load_mode_ajax_call(){
+
+      $ppp = (isset($_POST["posts_per_page"])) ? $_POST["posts_per_page"] : 2;
+    $page = (isset($_POST['pageNumber'])) ? $_POST['pageNumber'] : 0;
+
+    header("Content-Type: text/html");
+
+    $args = array(
+        'suppress_filters' => true,
+        'post_type' => 'students',
+        'posts_per_page' => $ppp,
+        'paged'    => $page,
+    );
+
+    $loop = new WP_Query($args);
+    
+    $out = '';
+
+    if ($loop -> have_posts()) :  while ($loop -> have_posts()) : $loop -> the_post();
+
+        $out.= "<div>Name : ".get_the_title()."</div>";
+        $out.= "<div>".get_the_post_thumbnail( get_the_ID() ). "<br></div.";
+
+    endwhile;
+    endif;
+    wp_reset_postdata();
+    die($out);
     }
 }

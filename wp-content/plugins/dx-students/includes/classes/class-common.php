@@ -77,6 +77,9 @@ class Common {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, DXS_URL . 'assets/dist/public/js/bundle.min.js', array( 'jquery' ), filemtime( DXS_DIR . 'assets/dist/public/js/bundle.min.js' ), false );
+		wp_enqueue_script( $this->plugin_name, DXS_URL . 'assets/dist/public/js/dx-students-public.min.js', array( 'jquery' ), filemtime( DXS_DIR . 'assets/dist/public/js/dx-students-public.min.js' ), false );
+		wp_localize_script( $this->plugin_name, 'ajax_posts', array(
+			'ajaxurl' => admin_url( 'admin-ajax.php' ),
+		));
 	}
 }

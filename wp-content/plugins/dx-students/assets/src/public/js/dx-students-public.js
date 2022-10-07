@@ -27,4 +27,36 @@
 	 * single DOM-ready or window-load handler for a particular page.
 	 */
 
+	var pageNumber = 1;
+
+
+	function load_students( posts_per_page ){
+		pageNumber++;
+
+		var data = {
+			'action': 'load_more_students',
+			'pageNumber': pageNumber,
+			'posts_per_page': posts_per_page
+		};
+		$.post(ajax_posts.ajaxurl, data, function(response) {
+			
+			var $response = $(response);
+				if($response.length){
+					$("#students-list").append($response);
+					$("#more_posts").hide();
+				} else{
+					$("#more_posts").attr("disabled",true);
+				}
+		});
+		
+		return false;
+	}
+	$(document).on("click", "div[id='more_posts']", function () { 
+		let posts_per_page = $("#posts_per_page").text() ;
+
+		$("#more_posts").attr("disabled",true); 
+		load_students( posts_per_page );
+		$(this).insertAfter('#students-list'); 
+
+	});
 })(jQuery);

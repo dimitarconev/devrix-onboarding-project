@@ -161,6 +161,9 @@ class DX_Students {
 		$this->loader->add_filter( 'template_include', $plugin_students, 'students_template');
 		//Modifying archive query
 		$this->loader->add_action( 'pre_get_posts', $plugin_students, 'students_template' );
+		//Add load more ajax
+		$this->loader->add_action( 'wp_ajax_nopriv_load_more_students', $plugin_students, 'load_mode_ajax_call' );
+		$this->loader->add_action( 'wp_ajax_load_more_students', $plugin_students, 'load_mode_ajax_call' );
 	}
 
 	/**

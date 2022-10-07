@@ -35,13 +35,20 @@ function dx_students_list( $atts = [] ){
    
     $posts = new WP_Query( $query );
     $posts = $posts->get_posts();
-    $output = "";
+    $output = "<div id='students-list'>";
     foreach( $posts as $post ){
 
         $meta = get_post_meta( $post->ID );
         $output.= "Name : ".$post->post_title;
         $output.= get_the_post_thumbnail( $post ). "<br>";
     }
+
+    $output .= "</div>";
+    if( isset( $atts['students_count'] ) ){
+        $output.= '<div id="more_posts">Load More</div>';
+        $output.= '<div class="hidden" style="display:none" id="posts_per_page">'.$students_number.'</div>';
+    }
+    
 
     return $output;
 }
