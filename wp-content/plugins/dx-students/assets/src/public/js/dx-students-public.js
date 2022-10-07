@@ -51,6 +51,7 @@
 		
 		return false;
 	}
+	
 	$(document).on("click", "div[id='more_posts']", function () { 
 		let posts_per_page = $("#posts_per_page").text() ;
 
@@ -58,5 +59,15 @@
 		load_students( posts_per_page );
 		$(this).insertAfter('#students-list'); 
 
+	});
+
+	$(window).on('scroll', function () {
+		if( $("#infinite-scroll").length > 0 ){
+			let posts_per_page = $("#posts_per_page").text() ;
+			if ($(window).scrollTop() + $(window).height()  >= $(document).height() - 100) {
+	
+				load_students( posts_per_page );        
+			}
+		}
 	});
 })(jQuery);

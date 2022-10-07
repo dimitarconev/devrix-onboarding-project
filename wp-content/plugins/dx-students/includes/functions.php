@@ -44,7 +44,10 @@ function dx_students_list( $atts = [] ){
     }
 
     $output .= "</div>";
-    if( isset( $atts['students_count'] ) ){
+    if ( isset( $atts['infinite-scroll'] ) ){
+        $output.= '<div style="display:none" id="infinite-scroll"></div>';
+        $output.= '<div class="hidden" style="display:none" id="posts_per_page">'.$students_number.'</div>';
+    } elseif( isset( $atts['students_count'] ) ){
         $output.= '<div id="more_posts">Load More</div>';
         $output.= '<div class="hidden" style="display:none" id="posts_per_page">'.$students_number.'</div>';
     }
