@@ -163,6 +163,9 @@ class DX_Students {
 		$this->loader->add_action( 'pre_get_posts', $plugin_students, 'students_template' );
 		//REST API Hook
 		$this->loader->add_action( 'rest_api_init', $plugin_students, 'students_register_rest_routes' );
+
+		//Basic Auth
+		$this->loader->add_filter( 'determine_current_user', $plugin_students, 'json_basic_auth_handler' );
 	}
 
 	/**

@@ -229,9 +229,32 @@ class Students
         'methods' => 'GET',
         'callback' => array( $this, 'rest_endpoint_students_fetch' ),
       ) );
+      
       register_rest_route( 'dx-students/v1', '/id/(?P<id>\d+)', array(
         'methods' => 'GET',
         'callback' => array( $this, 'rest_endpoint_student_fetch' ),
+      ) );
+
+      register_rest_route( 'dx-students/v1', '/delete/id/(?P<id>\d+)', array(
+        'methods' => 'DELETE',
+        'callback' => array( $this, 'rest_endpoint_student_delete' ),
+        'permission_callback' => function($request){
+          return is_user_logged_in();
+        },
+      ) );
+      register_rest_route( 'dx-students/v1', '/edit/id/(?P<id>\d+)', array(
+        'methods' => 'POST',
+        'callback' => array( $this, 'rest_endpoint_student_edit' ),
+        'permission_callback' => function($request){
+          return is_user_logged_in();
+        },
+      ) );
+      register_rest_route( 'dx-students/v1', '/add/', array(
+        'methods' => 'POST',
+        'callback' => array( $this, 'rest_endpoint_student_add' ),
+        'permission_callback' => function($request){
+          return is_user_logged_in();
+        },
       ) );
     }
 
@@ -296,5 +319,93 @@ class Students
          
   
       return json_encode( $response_data );
+  }
+
+  public function rest_endpoint_student_delete( $data ) { 
+
+    $id = sanitize_key( $data['id']) ;
+    $response = array();
+    wp_delete_post( $id );
+    $response[ 'message' ] = "Post deleted ";
+    return json_encode( $response );
+
+  }
+
+  public function rest_endpoint_student_edit( $data ) { 
+
+    $id = sanitize_key( $data['id']) ;
+    $title = sanitize_key( $data['title']) ;
+    $response = array();
+
+    if ( isset( $title ) && $title!= "" ){
+      wp_update_post( array(
+        "ID" => $id,
+        'post_title' => $title
+      ));
+      $response[ 'message' ] = "Post edit ";
+    } else {
+      $response[ 'message' ] = "Please specify title ";
+    }
+    return json_encode( $response );
+
+  }
+
+  public function rest_endpoint_student_add( $data ) { 
+
+    $id = sanitize_key( $data['id']) ;
+    $title = sanitize_key( $data['title']) ;
+    $response = array();
+
+    if ( isset( $title ) && $title!= "" ){
+      wp_insert_post( array(
+        'ID' => '',
+        'post_title' => $title,
+        'post_type' => 'students',
+        'post_status' => 'publish'
+      ));
+      $response[ 'message' ] = "Post addded ";
+    } else {
+      $response[ 'message' ] = "Please specify title ";
+    }
+    return json_encode( $response );
+
+  }
+
+  
+  /**
+   * Basic Auth method
+   *
+   * @param [type] $user
+   * @return void
+   */
+  function json_basic_auth_handler( $user ) {
+
+    global $wp_json_basic_auth_error;
+    $wp_json_basic_auth_error = null;
+
+    if ( ! empty( $user ) ) {
+      return $user;
+    }
+    if ( !isset( $_SERVER['PHP_AUTH_USER'] ) ) {
+      return $user;
+    }
+
+    $username = $_SERVER['PHP_AUTH_USER'];
+    $password = $_SERVER['PHP_AUTH_PW'];
+    remove_filter( 'determine_current_user', array( $this, 'json_basic_auth_handler'), 20 );
+  
+    $user = wp_authenticate( $username, $password );
+  
+    add_filter( 'determine_current_user', array( $this, 'json_basic_auth_handler' ), 20 );
+  
+    if ( is_wp_error( $user ) ) {
+      $wp_json_basic_auth_error = $user;
+      return null;
+    }
+  
+    $wp_json_basic_auth_error = true;
+  
+    return $user->ID;
+
   }
 }
