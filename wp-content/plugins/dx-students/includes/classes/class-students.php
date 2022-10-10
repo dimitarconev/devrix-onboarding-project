@@ -325,8 +325,13 @@ class Students
 
     $id = sanitize_key( $data['id']) ;
     $response = array();
-    wp_delete_post( $id );
-    $response[ 'message' ] = "Post deleted ";
+    if ( FALSE === get_post_status( $id ) ) {
+      return rest_ensure_response( 'Post not found' );
+    } else {
+      wp_delete_post( $id );
+      return rest_ensure_response( 'Post Deleted' );
+    }
+    
     return json_encode( $response );
 
   }
@@ -336,16 +341,20 @@ class Students
     $id = sanitize_key( $data['id']) ;
     $title = sanitize_key( $data['title']) ;
     $response = array();
-
-    if ( isset( $title ) && $title!= "" ){
-      wp_update_post( array(
-        "ID" => $id,
-        'post_title' => $title
-      ));
-      $response[ 'message' ] = "Post edit ";
+    if ( FALSE === get_post_status( $id ) ) {
+      if ( isset( $title ) && $title!= "" ){
+        wp_update_post( array(
+          "ID" => $id,
+          'post_title' => $title
+        ));
+        return rest_ensure_response( 'Post edited' );
+      } else {
+        return rest_ensure_response( 'Please specify title' );
+      }
     } else {
-      $response[ 'message' ] = "Please specify title ";
+      return rest_ensure_response( 'Post not found' );
     }
+    
     return json_encode( $response );
 
   }
@@ -363,9 +372,9 @@ class Students
         'post_type' => 'students',
         'post_status' => 'publish'
       ));
-      $response[ 'message' ] = "Post addded ";
+      return rest_ensure_response( 'Post added' );
     } else {
-      $response[ 'message' ] = "Please specify title ";
+      return rest_ensure_response( 'Please specify title' );
     }
     return json_encode( $response );
 
